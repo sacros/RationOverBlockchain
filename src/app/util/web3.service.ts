@@ -9,7 +9,7 @@ declare let window: any;
 
 @Injectable()
 export class Web3Service {
-  private web3: any;
+  public web3: any;
   private accounts: string[];
   public ready = false;
   public MetaCoin: any;

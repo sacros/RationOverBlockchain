@@ -1,0 +1,68 @@
+<header>
+    <!-- header wrapper starts here  -->
+    <div class="row m-0 page-spcaing">
+        <div class="col-6"><!-- Brand/logo -->
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler d-sm-inline-block d-md-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon" data-icon="storage"></span>
+            </button>
+            <a class="navbar-brand p-0" href="#"><img src="assets/images/logo.png" class='logo-lms' alt="logo"
+                                                      style="width:auto;"></a>
+        </div>
+        <div class="col-6 d-md-block d-none wlcme-usr-blck text-right">
+            <!-- welcome user section starts here -->
+            <a class="usr-nme d-inline-block text-uppercase pr-3 pt-3" href="javascript:void(0);">Welcome, Username</a>
+            <a class="usr-logout d-inline-block text-uppercase pt-3" (click)="logout()"
+               href="javascript:void(0);">Logout</a>
+        </div>
+    </div>
+    <div class="row m-0">
+        <div class="col-12 page-spcaing">
+            <!-- Top Navigation Links -->
+            <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-inverse bg-inverse bg-nav p-0">
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                        
+                        <!-- <li class="nav-item">
+                                        <a class="nav-link link-space " href="javascript:void()"><span class="nav-tp-mnu-icn nav-icn-projects"></span><span class="nav-tp-txt">Sell Purchase</span></a>
+                                    </li> -->
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="col-12 page-spcaing">
+            <hr class="line-green m-0"/>
+        </div>
+        <div class="col-12 page-spcaing">
+            <ol class="breadcrumb rounded-0 breadcrumb-custom">
+                <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+                <li class="breadcrumb-item"><a routerLink="/land-details">Manage Land Record</a></li>
+                <li class="breadcrumb-item active"><a routerLink="/add-land-record">Add Land Record</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- header wrapper ends here  -->
+</header>
+<section class="container-fluid flex-grow">
+    <!-- inner content wrapper starts here  -->
+    <div class="content-area">
+        <router-outlet></router-outlet>
+    </div>
+</section>
+<footer class="flex-grow pb-md-5 pb-lg-1 pb-xl-1"><!-- footer wrapper starts here  -->
+    <div class="row m-0">
+        <div class="col-12 page-spcaing">
+            <div class="row m-0 ftr-bdr-tp">
+                <div class="col-12 col-md-8 text-center text-md-left p-0">Copyright &copy; 2018, 1337 BLOCK
+                </div>
+                <div class="col-12 col-md-4 text-center text-md-right p-0">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- footer wrapper ends here  -->
+</footer>

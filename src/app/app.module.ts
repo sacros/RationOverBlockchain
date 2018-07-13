@@ -15,9 +15,19 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
+import { IpfsService } from './service/ipfs.service';
+import { Web3Service } from './util/web3.service';
+// ../../../util/web3.service
+import { ConversionService } from './service/conversion.service';
+import { LayoutComponent } from './component/layout/layout.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LayoutComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -30,7 +40,8 @@ import {
     BrowserModule,
     FormsModule,
     HttpModule,
-    MetaModule
+    MetaModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
