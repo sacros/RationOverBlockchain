@@ -52,7 +52,7 @@ import { LoginComponent } from './component/login/login.component';
     MetaModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [IpfsService,Web3Service,ConversionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
