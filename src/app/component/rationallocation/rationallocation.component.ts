@@ -50,6 +50,43 @@ export class RationallocationComponent implements OnInit {
   loadUserInformation(){
     this.addLimit();
   }
+  commoditySubmit(){
+    this.allocateResource();
+  }
+  async allocateResource() {
+    console.log('calling method from contract');
+    try {
+      const deployedContract = await this.RdsContract.deployed();
+      console.log(deployedContract);
+      //console.log('Account', this.model.account);
+      var d = new Date();
+      var n = d.getMonth();
+      let individualDetailsArr = await deployedContract.distributeToCustomers(this.ration.rationNumber, n, this.ration.Wheat, this.ration.Rice, this.ration.Kerosene, {from: this.model.account});
+      var individualDetailsHash = individualDetailsArr[1];
+      alert(individualDetailsHash);
+      // if(individualDetailsHash == false) {
+      //   alert(individualDetailsArr[1]);
+      // }
+      // else {
+      //   alert()
+      //   console.log('Contract called');
+      //   if (individualDetailsHash) {
+      //     this.IpfsService.get(individualDetailsHash).then((result) => {
+      //      result = JSON.parse(result);
+      //      this.individualDetails=JSON.parse(result);
+      //      console.log(this.individualDetails);
+      //    }).catch((err) => {
+      //        console.log(err);
+      //    })
+      //  } else {
+      //      console.log("Unable to retrieve land hash");
+      //  }
+      // }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
 
   async addLimit() {
     console.log('calling method from contract');
