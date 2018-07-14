@@ -25,13 +25,6 @@ contract RDS {
     
     enum Category {APL, BPL}
     
-    uint A_wheat = 5;
-    uint A_rice = 5;
-    uint A_kerosene = 5;
-    uint B_wheat = 10;
-    uint B_rice = 10;
-    uint B_kerosene = 10;
-    
     struct Inventory {
         uint wheat;
         uint rice;
@@ -61,6 +54,9 @@ contract RDS {
     event InventoryManagerRegistered(address inventoryManagerAddress, string ipfsHash, uint timestamp);
     event ResourceAllocatedToShopkeeper(address inventoryManagerAddress, address shopkeeperAddress, uint wheat, uint rice, uint kerosene, uint timestamp);
     event CannotAllocateResourceToCustomer(bytes24, string);
+    event CategoryAllocationLimitsSet(uint wheat, uint rice, uint kerosene, uint timestamp);
+    event RationDistributedToCustomer(bytes24 customerRationID, address shopkeeperAddress, uint month, uint wheat, uint rice, uint kerosene);
+    
     
     mapping(uint8 => Inventory) categoryAllocationLimit;
     
@@ -83,6 +79,7 @@ contract RDS {
         categoryAllocationLimit[_category].wheat = _wheat;
         categoryAllocationLimit[_category].rice = _rice;
         categoryAllocationLimit[_category].kerosene = _kerosene;
+        emit CategoryAllocationLimitsSet(_wheat, _rice, _kerosene, now);
         return (true, "Category Allocation Limits Set");
     }
     
@@ -159,42 +156,115 @@ contract RDS {
     
     function distributeToCustomers(bytes24 _individualRationCardID, uint _month, uint _wheat, uint _rice, uint _kerosene) public onlySeller returns (bool, string) {
         if (isIndividualRegistered[_individualRationCardID] == false) {
-        return (false, "Individual Not Registered");
+            return (false, "Individual Not Registered");
         }
     
-    //validate _month
-    //allocate commodities after checking limit
-    //store month
-    
-    uint lastWheatAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.wheat;
-    uint lastRiceAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.rice;
-    uint lastKeroAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.kerosene;
-    
-    uint8 _categ = uint8(IndividualDetails[_individualRationCardID].category);
-    
-    if (_wheat != 0) {
-        if ((lastWheatAlloc != 0 && lastWheatAlloc == _month) || _wheat > categoryAllocationLimit[_categ].wheat) {
-            emit CannotAllocateResourceToCustomer(_individualRationCardID, 'wheat');
-        } else {
+        //validate _month
+        //allocate commodities after checking limit
+        //store month
+        
+        uint lastWheatAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.wheat;
+        uint lastRiceAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.rice;
+        uint lastKeroAlloc = IndividualDetails[_individualRationCardID].inventoryMonth.kerosene;
+        
+        uint8 _categ = uint8(IndividualDetails[_individualRationCardID].category);
+        Inventory memory shopkeeperInventory = ShopkeeperDetails[msg.sender].inventory;
+
+        if (_wheat != 0) {
+            if ((lastWheatAlloc != 0 && lastWheatAlloc == _month) || _wheat > categoryAllocationLimit[_categ].wheat) {
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'wheat');
+                return (false, "Cannot allocate wheat");
+            }
+        }
+        
+        if (_rice != 0) {
+            if ((lastRiceAlloc != 0 && lastRiceAlloc == _month) || _wheat > categoryAllocationLimit[_categ].rice) {
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'rice');
+                return (false, "Cannot allocate rice");
+            }
+        }
+        
+        if (_kerosene != 0) {
+            if ((lastKeroAlloc != 0 && lastKeroAlloc == _month) || _wheat > categoryAllocationLimit[_categ].kerosene) {
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'kerosene');
+                return (false, "Cannot allocate kerosene");
+            }
+        }
+        
+        if(_wheat != 0){
+            if(_wheat > shopkeeperInventory.wheat) {
+                return (false, "Wheat not enough to distribute");
+            }
+            ShopkeeperDetails[msg.sender].inventory.wheat -= _wheat;
             lastWheatAlloc = _month;
+            IndividualDetails[_individualRationCardID].inventoryMonth.wheat = _month;
         }
-    }
-    
-    if (_rice != 0) {
-        if ((lastRiceAlloc != 0 && lastRiceAlloc == _month) || _wheat > categoryAllocationLimit[_categ].rice) {
-            emit CannotAllocateResourceToCustomer(_individualRationCardID, 'rice');
-        } else {
-            lastRiceAlloc = _month;
-        }
-    }
-    
-    if (_kerosene != 0) {
-        if ((lastKeroAlloc != 0 && lastKeroAlloc == _month) || _wheat > categoryAllocationLimit[_categ].kerosene) {
-            emit CannotAllocateResourceToCustomer(_individualRationCardID, 'kerosene');
-        } else {
+        if(_kerosene != 0){
+            if(_kerosene > shopkeeperInventory.kerosene) {
+                return (false, "Kerosene not enough to distribute");
+            }
+            ShopkeeperDetails[msg.sender].inventory.kerosene -= _kerosene;
             lastKeroAlloc = _month;
+            IndividualDetails[_individualRationCardID].inventoryMonth.kerosene = _month;
         }
+        if(_rice != 0) {
+            if(_rice > shopkeeperInventory.rice) {
+                return (false, "Rice not enough to distribute");
+            }
+            ShopkeeperDetails[msg.sender].inventory.rice -= _rice;
+            lastRiceAlloc = _month;
+            IndividualDetails[_individualRationCardID].inventoryMonth.rice = _month;
+        }
+        // if (_wheat != 0) {
+        //     if ((lastWheatAlloc != 0 && lastWheatAlloc == _month) || _wheat > categoryAllocationLimit[_categ].wheat) {
+        //         emit CannotAllocateResourceToCustomer(_individualRationCardID, 'wheat');
+        //         return (false, "Cannot allocate wheat");
+        //     } else {
+        //         lastWheatAlloc = _month;
+        //     }
+        // }
+        
+        // if (_rice != 0) {
+        //     if ((lastRiceAlloc != 0 && lastRiceAlloc == _month) || _wheat > categoryAllocationLimit[_categ].rice) {
+        //         emit CannotAllocateResourceToCustomer(_individualRationCardID, 'rice');
+        //         return (false, "Cannot allocate rice");
+        //     } else {
+        //         lastRiceAlloc = _month;
+        //     }
+        // }
+        
+        // if (_kerosene != 0) {
+        //     if ((lastKeroAlloc != 0 && lastKeroAlloc == _month) || _wheat > categoryAllocationLimit[_categ].kerosene) {
+        //         emit CannotAllocateResourceToCustomer(_individualRationCardID, 'kerosene');
+        //         return (false, "Cannot allocate kerosene");
+        //     } else {
+        //         lastKeroAlloc = _month;
+        //     }
+        // }
+        emit RationDistributedToCustomer(_individualRationCardID, msg.sender, _month, _wheat, _rice, _kerosene);
+        return (true, "Resources distributed to Customer");
     }
-    return (true, "Resources distributed to Customer");
+    
+    function getCategoryAllocationLimit(uint8 _categ) public view returns (uint, uint, uint) {
+        Inventory memory inventory = categoryAllocationLimit[_categ];
+        return (inventory.wheat, inventory.rice, inventory.kerosene);
     }
+    
+    function getIndividualDetails(bytes24 _individualRationCardID) public view returns (string, Category, uint, uint, uint) {
+        require(isIndividualRegistered[_individualRationCardID] == true, "Individual not Registered");
+        Individual memory individual = IndividualDetails[_individualRationCardID];
+        return (individual.ipfsHash, individual.category, individual.inventoryMonth.wheat, individual.inventoryMonth.rice, individual.inventoryMonth.kerosene);
+    }
+    
+    function getShopkeeperDetails(address _shopkeeperAddress) public view returns (string, uint, uint, uint) {
+        require(isShopkeeperRegistered[_shopkeeperAddress] == true, "Shopkeeper not Registered");
+        Shopkeeper memory shopkeeper = ShopkeeperDetails[_shopkeeperAddress];
+        return(shopkeeper.ipfsHash, shopkeeper.inventory.wheat, shopkeeper.inventory.rice, shopkeeper.inventory.kerosene);
+    }
+    
+    function getInventoryManagerDetails(address _inventoryManagerAddress) public view returns (string ipfsHash) {
+        require(isInventoryManagerRegistered[_inventoryManagerAddress] == true, "Inventory Manager not registered");
+        return InventoryManagerDetails[_inventoryManagerAddress].ipfsHash;
+    }
+
 }
