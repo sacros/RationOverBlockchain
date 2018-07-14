@@ -12,7 +12,7 @@ const rdsArtifacts = require('../../../../build/contracts/RDS.json');
   styleUrls: ['./stockallocation.component.css']
 })
 export class StockallocationComponent implements OnInit {
-  commodity: Stock = new Stock();
+  stock: Stock = new Stock();
   accounts: string[];
   RdsContract: any;
   model = {
@@ -40,5 +40,28 @@ export class StockallocationComponent implements OnInit {
       //  this.refreshBalance();
       ////////////
     });
+  }
+  stockAllocate(){
+    this.addLimit();
+  }
+
+  async addLimit() {
+    console.log('calling method from contract');
+    try {
+      const deployedContract = await this.RdsContract.deployed();
+      console.log(deployedContract);
+      //console.log('Account', this.model.account);
+      
+      let callRegister = await deployedContract.allocateResourceToShopkeeper(this.stock.ShopKeeperAddress, this.stock.Wheat, this.stock.Rice, this.stock.Kerosene, {from: this.model.account});
+      
+      console.log('Contract called');
+
+      // @TODO: Redirect to appropriate page
+      this.router.navigate(["/dashboard"]);
+
+      //const metaCoinBalance = await deployedLand.getBalance.call(this.model.account);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

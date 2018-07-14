@@ -1,6 +1,6 @@
 export class Stock {
-    Rice:string = "0";
-    Wheat:string = "0";
-    Kerosene:string = "0";
-    UserCategory:string = "0";
+    Rice:number = 0;
+    Wheat:number = 0;
+    Kerosene:number = 0;
+    ShopKeeperAddress:string = "Test Address";
 }
