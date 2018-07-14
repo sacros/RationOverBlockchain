@@ -19,8 +19,8 @@ export class StockallocationComponent implements OnInit {
   accounts: string[];
   RdsContract: any;
   shopkeeperAddresses: any;
-  shopkeeperHashes: any;
-  shopkeeperDetails: any;
+  shopkeeperHashes = [];
+  shopkeeperDetails = [{"UserId":0,"UserName":"--Select--"}];
   model = {
     amount: 5,
     receiver: '',
@@ -53,24 +53,27 @@ export class StockallocationComponent implements OnInit {
         var shopkeeperHash  = await deployedContract.getShopkeeperDetails.call(shopkeeperAddress.toString());
         console.log(shopkeeperHash);
         
-        if (shopkeeperHash) {
-           let shopkeeperData = this.IpfsService.get(shopkeeperHash).then((result) => {
-            result = JSON.parse(result);
+        if (shopkeeperHash[0]) {
+           let shopkeeperData = this.IpfsService.get(shopkeeperHash[0]).then((result) => {
+            result = JSON.parse(JSON.parse(result));
+            result.address = shopkeeperAddress.toString();
+            console.log('Hi ' + result.UserId);
             this.shopkeeperDetails.push(result);
           }).catch((err) => {
               console.log(err);
           })
         } else {
-            console.log("Unable to retrieve land hash");
+            console.log("Unable to retrieve hash");
         }
       }
-      for(var i =0;this.shopkeeperAddresses.length;i++){
-        var shopkeperDetail = await deployedContract.getShopkeeperDetails.call(this.shopkeeperAddresses[i]);
-        console.log(shopkeperDetail);
-        this.shopkeeperHashes.push(shopkeperDetail[0]);
-      }
-      console.log(this.shopkeeperHashes);
-      console.log('Contract called');
+      
+      // for(var i =0;this.shopkeeperAddresses.length;i++){
+      //   var shopkeperDetail = await deployedContract.getShopkeeperDetails.call(this.shopkeeperAddresses[i]);
+      //   console.log(shopkeperDetail);
+      //   this.shopkeeperHashes.push(shopkeperDetail[0]);
+      // }
+      // console.log(this.shopkeeperHashes);
+      // console.log('Contract called');
 
     } catch (e) {
       console.log(e);
@@ -92,6 +95,10 @@ export class StockallocationComponent implements OnInit {
   stockAllocate(){
     this.addLimit();
   }
+  hashValue : any;
+  onChange(event) {
+    this.hashValue = event.target.value;
+  }
 
   async addLimit() {
     console.log('calling method from contract');
@@ -99,10 +106,13 @@ export class StockallocationComponent implements OnInit {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
       //console.log('Account', this.model.account);
-      
-      let callRegister = await deployedContract.allocateResourceToShopkeeper(this.stock.ShopKeeperAddress, this.stock.Wheat, this.stock.Rice, this.stock.Kerosene, {from: this.model.account});
-      
+      console.log(this.stock.ShopKeeperAddress);
+      let callAlloc = await deployedContract.allocateResourceToShopkeeper(this.stock.Wheat, this.stock.Rice, this.stock.Kerosene, this.hashValue, {from: this.model.account}).call();
       console.log('Contract called');
+      
+      if (callAlloc[0] == true) {
+        alert(callAlloc[1]);
+      }
 
       // @TODO: Redirect to appropriate page
       this.router.navigate(["/dashboard"]);

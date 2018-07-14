@@ -1,9 +1,9 @@
 <h2>Allocate stocks to sellers</h2>
 <hr>
 <div style="margin-bottom: 10px">
-  <label style="font-weight: bold">Select Seller ID : </label>
-  <select style="margin-left: 70px;width: 125px;">
-    <option>--Select--</option>
+  <label style="font-weight: bold">Select Seller : </label>
+  <select style="margin-left: 70px;width: 125px;" (change)="onChange($event)" >
+    <option *ngFor="let user of shopkeeperDetails" value={{user.address}}  selected={{user.selected}} [(ngModel)]="stock.ShopKeeperAddress">{{user.UserName}}</option>
   </select>
 </div>
 <table>
