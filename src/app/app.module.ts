@@ -17,6 +17,7 @@ import {
 
 import { IpfsService } from './service/ipfs.service';
 import { Web3Service } from './util/web3.service';
+import { UserService } from './service/user.service';
 // ../../../util/web3.service
 import { ConversionService } from './service/conversion.service';
 import { LayoutComponent } from './component/layout/layout.component';
@@ -52,7 +53,7 @@ import { LoginComponent } from './component/login/login.component';
     MetaModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [IpfsService,Web3Service,ConversionService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
