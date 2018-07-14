@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rationallocation.component.css']
 })
 export class RationallocationComponent implements OnInit {
-
+  rationIDNumber="1234567890";
+  rationValArr =["1","2","3"];
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

@@ -10,6 +10,7 @@ export class CommodityRatesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

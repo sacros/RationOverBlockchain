@@ -8,25 +8,50 @@ import { StockallocationComponent } from './component/stockallocation/stockalloc
 import { RationallocationComponent } from './component/rationallocation/rationallocation.component';
 
 const routes: Routes = [
-{ path: '', redirectTo: 'dashboard',pathMatch: 'full'},
-{ path: 'commodityRates',component:CommodityRatesComponent},
-{ path: 'stockAllocation',component:StockallocationComponent},
-{ path: 'rationAllocation',component:RationallocationComponent},
-{ path: 'dashboard', component:LayoutComponent, 
-      children: [
-                  {
-                      path: '',
-                      component: DashboardComponent                         
-                  }
-                ]
-   },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  {
+    path: 'commodityRates', component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CommodityRatesComponent
+      }
+    ]
+  },
+  {
+    path: 'stockAllocation', component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: StockallocationComponent
+      }
+    ]
+  },
+  {
+    path: 'rationAllocation', component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: RationallocationComponent
+      }
+    ]
+  },
+  {
+    path: 'dashboard', component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
+      }
+    ]
+  },
 
 
-{ path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
