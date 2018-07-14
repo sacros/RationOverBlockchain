@@ -172,21 +172,21 @@ contract RDS {
 
         if (_wheat != 0) {
             if ((lastWheatAlloc != 0 && lastWheatAlloc == _month) || _wheat > categoryAllocationLimit[_categ].wheat) {
-                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'wheat');
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, "wheat");
                 return (false, "Cannot allocate wheat");
             }
         }
         
         if (_rice != 0) {
             if ((lastRiceAlloc != 0 && lastRiceAlloc == _month) || _wheat > categoryAllocationLimit[_categ].rice) {
-                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'rice');
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, "rice");
                 return (false, "Cannot allocate rice");
             }
         }
         
         if (_kerosene != 0) {
             if ((lastKeroAlloc != 0 && lastKeroAlloc == _month) || _wheat > categoryAllocationLimit[_categ].kerosene) {
-                emit CannotAllocateResourceToCustomer(_individualRationCardID, 'kerosene');
+                emit CannotAllocateResourceToCustomer(_individualRationCardID, "kerosene");
                 return (false, "Cannot allocate kerosene");
             }
         }
@@ -266,5 +266,4 @@ contract RDS {
         require(isInventoryManagerRegistered[_inventoryManagerAddress] == true, "Inventory Manager not registered");
         return InventoryManagerDetails[_inventoryManagerAddress].ipfsHash;
     }
-
 }
