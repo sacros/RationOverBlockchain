@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Ration } from '../../../model/Ration';
 import { ConversionService } from '../../service/conversion.service';
 import { IpfsService } from '../../service/ipfs.service';
 import { Web3Service } from '../../util/web3.service';
 import { Router, ActivatedRoute } from '@angular/router';
+
 
 declare let require: any;
 const rdsArtifacts = require('../../../../build/contracts/RDS.json');
@@ -14,7 +16,8 @@ const rdsArtifacts = require('../../../../build/contracts/RDS.json');
 })
 export class RationallocationComponent implements OnInit {
   rationIDNumber="1234567890";
-  rationValArr =["1","2","3"];
+  ration: Ration = new Ration();
+  individualDetails:any;
   accounts: string[];
   RdsContract: any;
   model = {
@@ -43,5 +46,34 @@ export class RationallocationComponent implements OnInit {
       //  this.refreshBalance();
       ////////////
     });
+  }
+  loadUserInformation(){
+    this.addLimit();
+  }
+
+  async addLimit() {
+    console.log('calling method from contract');
+    try {
+      const deployedContract = await this.RdsContract.deployed();
+      console.log(deployedContract);
+      //console.log('Account', this.model.account);
+      
+      let individualDetailsArr = await deployedContract.getIndividualDetails(this.ration.rationNumber, {from: this.model.account});
+      var individualDetailsHash = individualDetailsArr[0];
+      console.log('Contract called');
+      if (individualDetailsHash) {
+        let shopkeeperData = this.IpfsService.get(individualDetailsHash).then((result) => {
+         result = JSON.parse(result);
+         this.individualDetails.push(result);
+       }).catch((err) => {
+           console.log(err);
+       })
+     } else {
+         console.log("Unable to retrieve land hash");
+     }
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
