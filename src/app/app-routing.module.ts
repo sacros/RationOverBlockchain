@@ -7,9 +7,10 @@ import { CommodityRatesComponent } from './component/commodity-rates/commodity-r
 import { StockallocationComponent } from './component/stockallocation/stockallocation.component';
 import { RationallocationComponent } from './component/rationallocation/rationallocation.component';
 import { LoginComponent } from './component/login/login.component';
+import { AuthguardService } from './authguard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login',pathMatch: 'full'},
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login', component: LoginComponent
   },
@@ -41,7 +42,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'dashboard', component: LayoutComponent,
+    path: 'dashboard', canActivate: [AuthguardService], component: LayoutComponent,
     children: [
       {
         path: '',

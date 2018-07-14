@@ -6,10 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
+  details : any;
   constructor() { }
 
   ngOnInit() {
+    this.details = JSON.parse(sessionStorage.getItem('currentUser'));
   }
-
 }
