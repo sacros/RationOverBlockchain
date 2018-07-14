@@ -22,12 +22,18 @@ import { ConversionService } from './service/conversion.service';
 import { LayoutComponent } from './component/layout/layout.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { CommodityRatesComponent } from './component/commodity-rates/commodity-rates.component';
+import { StockallocationComponent } from './component/stockallocation/stockallocation.component';
+import { RationallocationComponent } from './component/rationallocation/rationallocation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
-    DashboardComponent
+    DashboardComponent,
+    CommodityRatesComponent,
+    StockallocationComponent,
+    RationallocationComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -1,0 +1,35 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #000000;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+tr:nth-child(odd){
+    background-color: #fff;
+}
+th{
+    background-color: #00acd0;
+    color:white;
+}
+td:first-child{
+    font-weight: bold;
+}
+.radioBtn{
+    margin-right: 5px;
+}
+.submitBtn{
+    background-color: #27467c;
+    color: #fff;
+    padding: 10px 30px;
+    text-align: center;
+    border: none;
+}
