@@ -1,7 +1,10 @@
 <h2>Allocate stocks to sellers</h2>
 <hr>
 <div style="margin-bottom: 10px">
-  <label style="font-weight: bold">Select Seller ID : </label><select style="margin-left: 70px;width: 125px;"><option>--Select--</option></select>
+  <label style="font-weight: bold">Select Seller ID : </label>
+  <select style="margin-left: 70px;width: 125px;">
+    <option>--Select--</option>
+  </select>
 </div>
 <table>
   <tr>
@@ -10,17 +13,23 @@
   </tr>
   <tr>
     <td>Rice</td>
-    <td><input id="riceRate" class="rice" type="number"></td>
+    <td>
+      <input id="riceRate" class="rice" type="number" [(ngModel)]="stock.Rice">
+    </td>
   </tr>
   <tr>
     <td>Wheat</td>
-    <td><input id="wheatRate" class="wheat" type="number"></td>
+    <td>
+      <input id="wheatRate" class="wheat" type="number" [(ngModel)]="stock.Wheat">
+    </td>
   </tr>
   <tr>
     <td>Kerosene</td>
-    <td><input id="keroseneRate" class="kerosene" type="number"></td>
+    <td>
+      <input id="keroseneRate" class="kerosene" type="number" [(ngModel)]="stock.Kerosene">
+    </td>
   </tr>
 </table>
 <div style="text-align: center;margin-top:20px ">
-  <button class="submitBtn" id="commoditySubmit">Submit</button>
+  <button class="submitBtn" id="stockAllocate" (click)="stockAllocate()">Submit</button>
 </div>
