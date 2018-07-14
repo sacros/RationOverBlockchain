@@ -6,10 +6,22 @@
   <button class="rationNumsubmitBtn" id="commoditySubmit" (click)="loadUserInformation()">Load Information</button>
 </div>
 <table class="rationUserTbl">
-  <tr *ngFor="let rationItem of rationValArr">
-    <td>{{rationItem}}</td>
+  <tr>
+    <th colspan="2">User Information</th>
+  </tr>
+  <tr>
+    <td>User ID</td><td>{{individualDetails.UserId}}</td>
+  </tr>
+  <tr>
+      <td>User Name</td><td>{{individualDetails.UserName}}</td>
+    </tr>
+  <tr>
+      <td>Category</td><td>{{individualDetails.UserCategory}}</td>
+  </tr>
+  <tr>
+      <td>Number of dependents</td><td>{{individualDetails.NoOfDependents}}</td>
   </tr>
 </table>
-<div style="text-align: center;margin-top:20px;display: none;">
+<div style="text-align: center;margin-top:20px;">
   <button class="submitBtn" id="commoditySubmit">Submit</button>
 </div>

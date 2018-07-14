@@ -62,9 +62,10 @@ export class RationallocationComponent implements OnInit {
       var individualDetailsHash = individualDetailsArr[0];
       console.log('Contract called');
       if (individualDetailsHash) {
-        let shopkeeperData = this.IpfsService.get(individualDetailsHash).then((result) => {
+        this.IpfsService.get(individualDetailsHash).then((result) => {
          result = JSON.parse(result);
-         this.individualDetails.push(result);
+         this.individualDetails=JSON.parse(result);
+         console.log(this.individualDetails);
        }).catch((err) => {
            console.log(err);
        })
