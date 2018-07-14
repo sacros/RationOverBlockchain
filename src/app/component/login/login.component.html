@@ -1,0 +1,99 @@
+<div id="id01" class="modal">
+
+  <form #frm="ngForm" (ngSubmit)="registerAdmin()" class="modal-content animate col-md-8">
+    <div class="imgcontainer">
+      <!-- <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span> -->
+      <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
+      <h3 style="display:block;margin:auto">Ration Card Registration</h3>
+    </div>
+
+    <div class="container col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="uId">
+            <b>User Id</b><span style="color:red"><b> *</b></span>
+          </label>
+          <input type="text" placeholder="Enter UserId" name="uId" required #uId="ngModel" ngModel [(ngModel)]="url">
+          <label class="floating-label required" *ngIf="(!uId.value && uId.touched)" >User Id is Required</label>
+        </div>
+        <div class="col-md-6">
+          <label for="uname">
+            <b>Name</b><span style="color:red"><b> *</b></span>
+          </label>
+          <input type="text" placeholder="Enter Name" name="uname" required #uname="ngModel" ngModel>
+          <label class="floating-label required" *ngIf="(!uname.value && uname.touched)" >Name is Required</label>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+
+        <div class="col-md-6">
+          <label for="usercategory">
+            <b>User Category</b><span style="color:red"><b> *</b></span>
+
+          </label>
+          <!-- <label class="floating-label required" *ngIf="(!remember.value && remember.touched)" >User Category is Required</label> -->
+        </div>
+        <div class="col-md-6">
+          <label>
+            <input type="radio" name="remember" required > Above Poverty Line
+            <input type="radio" name="remember" required > Below Poverty Line
+          </label>
+        </div>
+
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dependents">
+            <b>No. of Dependents</b><span style="color:red"><b> *</b></span>
+          </label>
+          <input type="text" [(ngModel)]="noOfDependents" placeholder="Enter No.of dependents" name="noOfDependents">
+        </div>
+        <div class="col-md-6">
+          <label style="visibility:hidden">Dependents</label>
+          <button class="submit" type="button" (click)="addDependents()" [disabled]="count == noOfDependents || noOfDependents == undefined">
+            <span class="glyphicon glyphicon-plus">Add Dependents</span>
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="count>0">
+        <div class="col-md-12">
+          <table id="tab" style="width:100%">
+              <tr>
+                  <th>Aadhar No</th><span style="color:red"><b> *</b></span>
+              </tr>
+              <tr *ngFor="let x of dependentAadhars">
+                  <td><input type="text" value={{x.addharNo}}></td>
+              </tr>
+          </table>
+          </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <label>
+            <b>User Type</b><span style="color:red"><b> *</b></span>
+          </label>
+        </div>
+        <div class="col-md-6">
+          <label>
+            <input type="radio" name="remember"> Inventory Manager
+            <input type="radio" name="remember"> Seller
+            <input type="radio" name="remember"> Customer
+          </label>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+      <label for="address">
+        <b>Address</b><span style="color:red"><b> *</b></span>
+      </label><br>
+      <input type="text" placeholder="Address" name="address" required>
+    </div>
+      </div>
+      <button class="btn btn-lg " type="submit" class="submit" [class.btn-blue]="!frm.invalid" [disabled]="frm.invalid">Submit</button>
+    </div>
+  </form>
+</div>

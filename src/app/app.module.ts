@@ -25,6 +25,8 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { CommodityRatesComponent } from './component/commodity-rates/commodity-rates.component';
 import { StockallocationComponent } from './component/stockallocation/stockallocation.component';
 import { RationallocationComponent } from './component/rationallocation/rationallocation.component';
+import { LoginComponent } from './component/login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { RationallocationComponent } from './component/rationallocation/rational
     DashboardComponent,
     CommodityRatesComponent,
     StockallocationComponent,
-    RationallocationComponent
+    RationallocationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,
