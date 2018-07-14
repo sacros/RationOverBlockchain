@@ -48,7 +48,7 @@ export class CommodityRatesComponent implements OnInit {
   }
 
   async addLimit() {
-    console.log('calling Register method from contract');
+    console.log('calling method from contract');
     try {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
