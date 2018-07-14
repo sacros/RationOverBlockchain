@@ -4,6 +4,7 @@ import { Web3Service } from '../../util/web3.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConversionService } from '../../service/conversion.service';
 import { IpfsService } from '../../service/ipfs.service';
+import { UserService } from '../../service/user.service';
 
 declare let require: any;
 const rdsArtifacts = require('../../../../build/contracts/RDS.json');
@@ -29,8 +30,8 @@ export class LoginComponent implements OnInit {
     balance: 0,
     account: ''
   };
-
-  constructor(private web3Service: Web3Service, private IpfsService: IpfsService, private converionService: ConversionService, private router: Router) { }
+  
+  constructor(private web3Service: Web3Service, private IpfsService: IpfsService, private converionService: ConversionService, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
     this.watchAccount();
@@ -46,16 +47,12 @@ export class LoginComponent implements OnInit {
       this.accounts = accounts;
       this.model.account = accounts[0];
       console.log('Account', this.model.account);
-      //  this.refreshBalance();
-      ////////////
     });
   }
 
   addDependents(){
     this.count++;
     this.dependentAadhars.push(this.dependent);
-    // document.getElementById("tab").append(row);
-    //         $("#tab").append(row);
   }
 
   registerAdmin(){
@@ -68,16 +65,32 @@ export class LoginComponent implements OnInit {
   }
 
   async registerData(register, hash) {
+    var callRegister;
     console.log('calling method from contract');
     try {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
+      var account = this.userService.getUserAccount();
       //console.log('Account', this.model.account);
-      
-      //let callRegister = await deployedContract.registerIndividual(this.register.UserCategory, this.commodity.Wheat, this.commodity.Rice, this.commodity.Kerosene, {from: this.model.account});
-      
+      if(register.UserType == 0)
+          callRegister = await deployedContract.registerInventoryManager(account.address, hash, {from: this.model.account});
+      else if( register.UserType == 1){
+        callRegister = await deployedContract.registerShopkeeper(account.address, hash, {from: this.model.account});
+      }
+      else if(register.UserType == 2){
+        callRegister = await deployedContract.registerIndividual(register.UserId, register.UserCategory, hash, {from: this.model.account});
+      }
       console.log('Contract called');
+      //set user specific information in session
+      var user = {
+        name:register.UserName,
+        email:'',
+        uid:register.UserId,
+        account:account,
+        role :'DataEntry'
+      };
 
+      sessionStorage.setItem('currentUser', JSON.stringify(user));
       // @TODO: Redirect to appropriate page
       this.router.navigate(["/dashboard"]);
 
@@ -86,5 +99,4 @@ export class LoginComponent implements OnInit {
       console.log(e);
     }
   }
-
 }

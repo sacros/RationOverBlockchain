@@ -27,6 +27,7 @@ import { CommodityRatesComponent } from './component/commodity-rates/commodity-r
 import { StockallocationComponent } from './component/stockallocation/stockallocation.component';
 import { RationallocationComponent } from './component/rationallocation/rationallocation.component';
 import { LoginComponent } from './component/login/login.component';
+import { AuthguardService } from './authguard.service';
 
 
 @NgModule({
@@ -53,7 +54,7 @@ import { LoginComponent } from './component/login/login.component';
     MetaModule,
     AppRoutingModule
   ],
-  providers: [IpfsService,Web3Service,ConversionService, UserService],
+  providers: [IpfsService,Web3Service,ConversionService, UserService, AuthguardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
