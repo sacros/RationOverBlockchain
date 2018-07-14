@@ -1,9 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-body {
-    background-color:#25282a;
-    
-}.memeberBtn{
+.memeberBtn{
 	background-color: transparent;
     border: 0;
     padding-left: 0;

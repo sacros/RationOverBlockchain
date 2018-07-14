@@ -1,4 +1,4 @@
-export class Commodity {
+export class Stock {
     Rice:string = "0";
     Wheat:string = "0";
     Kerosene:string = "0";
