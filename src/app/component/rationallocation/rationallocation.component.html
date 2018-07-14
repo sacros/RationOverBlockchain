@@ -22,6 +22,30 @@
       <td>Number of dependents</td><td>{{individualDetails.NoOfDependents}}</td>
   </tr>
 </table>
+<table>
+  <tr>
+    <th>Resource</th>
+    <th>Quantity</th>
+  </tr>
+  <tr>
+    <td>Rice</td>
+    <td>
+      <input id="riceRate" class="rice" type="number" [(ngModel)]="ration.Rice">
+    </td>
+  </tr>
+  <tr>
+    <td>Wheat</td>
+    <td>
+      <input id="wheatRate" class="wheat" type="number" [(ngModel)]="ration.Wheat">
+    </td>
+  </tr>
+  <tr>
+    <td>Kerosene</td>
+    <td>
+      <input id="keroseneRate" class="kerosene" type="number" [(ngModel)]="ration.Kerosene">
+    </td>
+  </tr>
+</table>
 <div style="text-align: center;margin-top:20px;">
   <button class="submitBtn" id="commoditySubmit" (click)="commoditySubmit()">Submit</button>
 </div>
