@@ -56,12 +56,24 @@ export class LoginComponent implements OnInit {
   }
 
   registerAdmin(){
-    alert("called");
+    this.userService.showLoader = true;
+    //alert("called");
     var data = JSON.stringify(this.register);
     this.IpfsService.add(data).then((hash) => {
-        alert('hash: ' + hash);
+       // alert('hash: ' + hash);
+       this.userService.showLoader = false;
         this.registerData(this.register, hash);
     })
+  }
+
+  createAccount() {
+    var data = this.userService.getUserAccount();
+    console.log("These are the details of a newly created account: ");
+    console.log(data);
+    this.userService.giveToken(this.model.account, data.address);
+    this.userService.address = data.address;
+    this.userService.privateKey = data.privateKey;
+    return data;
   }
 
   async registerData(register, hash) {
@@ -70,16 +82,23 @@ export class LoginComponent implements OnInit {
     try {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
-      var account = this.userService.getUserAccount();
+      // var account = this.userService.getUserAccount();
       //console.log('Account', this.model.account);
-      if(register.UserType == 0)
-          callRegister = await deployedContract.registerInventoryManager(account.address, hash, {from: this.model.account});
+      // console.log(account);
+      var account;
+      if(register.UserType == 0){
+        account = this.createAccount();
+        callRegister = await deployedContract.registerInventoryManager(account.address, hash, {from: this.model.account});
+      }
       else if( register.UserType == 1){
+        account = this.createAccount();
         callRegister = await deployedContract.registerShopkeeper(account.address, hash, {from: this.model.account});
       }
       else if(register.UserType == 2){
         callRegister = await deployedContract.registerIndividual(register.UserId, register.UserCategory, hash, {from: this.model.account});
       }
+
+
       console.log('Contract called');
       //set user specific information in session
       var user = {
@@ -92,6 +111,7 @@ export class LoginComponent implements OnInit {
 
       sessionStorage.setItem('currentUser', JSON.stringify(user));
       // @TODO: Redirect to appropriate page
+      //this.userService.showLoader= false;
       this.router.navigate(["/dashboard"]);
 
       //const metaCoinBalance = await deployedLand.getBalance.call(this.model.account);
