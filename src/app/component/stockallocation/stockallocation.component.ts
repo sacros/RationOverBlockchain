@@ -15,6 +15,8 @@ export class StockallocationComponent implements OnInit {
   stock: Stock = new Stock();
   accounts: string[];
   RdsContract: any;
+  shopkeeperAddresses: any;
+  shopkeeperHashes: any;
   model = {
     amount: 5,
     receiver: '',
@@ -28,10 +30,32 @@ export class StockallocationComponent implements OnInit {
     this.web3Service.artifactsToContract(rdsArtifacts)
       .then((RdsAbstraction) => {
         this.RdsContract = RdsAbstraction;
+        this.getArrayData();
         // this.callTestMethod();
       });
   }
 
+  async getArrayData() {
+    console.log('calling method from contract');
+    try {
+      const deployedContract = await this.RdsContract.deployed();
+      console.log(deployedContract);
+      //console.log('Account', this.model.account);
+      
+      this.shopkeeperAddresses = await deployedContract.getShopkeeperAddresses.call();
+      console.log(this.shopkeeperAddresses);
+      // let tempHash = await deployedContract.
+      
+      console.log('Contract called');
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // async getHashesData() {
+
+  // }
   watchAccount() {
     this.web3Service.accountsObservable.subscribe((accounts) => {
       this.accounts = accounts;
