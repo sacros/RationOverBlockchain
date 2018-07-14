@@ -1,4 +1,4 @@
-<h2>Commodity Rates</h2>
+ <h2>Commodity Rates</h2>
 <hr>
 <table>
   <tr>
@@ -6,21 +6,24 @@
   </tr>
   <tr>
     <td>Rice</td>
-    <td><input id="riceRate" class="rice" type="number"></td>
+    <td><input id="riceRate" class="rice" type="number" [(ngModel)]="commodity.Rice"></td>
   </tr>
   <tr>
     <td>Wheat</td>
-    <td><input id="wheatRate" class="wheat" type="number"></td>
+    <td><input id="wheatRate" class="wheat" type="number" [(ngModel)]="commodity.Wheat"></td>
   </tr>
   <tr>
     <td>Kerosene</td>
-    <td><input id="keroseneRate" class="kerosene" type="number"></td>
+    <td><input id="keroseneRate" class="kerosene" type="number" [(ngModel)]="commodity.Kerosene"></td>
   </tr>
   <tr>
     <td>User Category</td>
-    <td><input type="radio" value="Above Poverty Line" id="abovePoverty" class="radioBtn">Above Poverty Line<br><input type="radio" value="Below Poverty Line" id="belowPoverty" class="radioBtn">Below Poverty Line</td>
+    <td>
+      <input type="radio" id="abovePoverty" class="radioBtn" [(ngModel)]="commodity.UserCategory" value="0">Above Poverty Line<br>
+      <input type="radio" id="belowPoverty" class="radioBtn" [(ngModel)]="commodity.UserCategory" value="1">Below Poverty Line
+    </td>
   </tr>
 </table>
 <div style="text-align: center;margin-top:20px ">
-  <button class="submitBtn" id="commoditySubmit"(click)="submitCommodityRecord()">Submit</button>
+  <button class="submitBtn" id="commoditySubmit" (click)=addCommodityLimits()>Submit</button>
 </div>
