@@ -3,6 +3,9 @@ import { Stock } from '../../../model/Stock';
 import { Web3Service } from '../../util/web3.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { ConversionService } from '../../service/conversion.service';
+import { IpfsService } from '../../service/ipfs.service';
+
 declare let require: any;
 const rdsArtifacts = require('../../../../build/contracts/RDS.json');
 
@@ -17,6 +20,7 @@ export class StockallocationComponent implements OnInit {
   RdsContract: any;
   shopkeeperAddresses: any;
   shopkeeperHashes: any;
+  shopkeeperDetails: any;
   model = {
     amount: 5,
     receiver: '',
@@ -24,7 +28,7 @@ export class StockallocationComponent implements OnInit {
     account: ''
   };
 
-  constructor(private web3Service: Web3Service, private router: Router) { }
+  constructor(private web3Service: Web3Service, private router: Router, private IpfsService: IpfsService, private converionService: ConversionService) { }
   ngOnInit() {
     this.watchAccount();
     this.web3Service.artifactsToContract(rdsArtifacts)
@@ -45,7 +49,27 @@ export class StockallocationComponent implements OnInit {
       this.shopkeeperAddresses = await deployedContract.getShopkeeperAddresses.call();
       console.log(this.shopkeeperAddresses);
       // let tempHash = await deployedContract.
-      
+      for(let shopkeeperAddress of this.shopkeeperAddresses) {
+        var shopkeeperHash  = await deployedContract.getShopkeeperDetails.call(shopkeeperAddress.toString());
+        console.log(shopkeeperHash);
+        
+        if (shopkeeperHash) {
+           let shopkeeperData = this.IpfsService.get(shopkeeperHash).then((result) => {
+            result = JSON.parse(result);
+            this.shopkeeperDetails.push(result);
+          }).catch((err) => {
+              console.log(err);
+          })
+        } else {
+            console.log("Unable to retrieve land hash");
+        }
+      }
+      for(var i =0;this.shopkeeperAddresses.length;i++){
+        var shopkeperDetail = await deployedContract.getShopkeeperDetails.call(this.shopkeeperAddresses[i]);
+        console.log(shopkeperDetail);
+        this.shopkeeperHashes.push(shopkeperDetail[0]);
+      }
+      console.log(this.shopkeeperHashes);
       console.log('Contract called');
 
     } catch (e) {
