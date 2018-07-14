@@ -106,8 +106,8 @@ export class StockallocationComponent implements OnInit {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
       //console.log('Account', this.model.account);
-      console.log(this.stock.ShopKeeperAddress);
-      let callAlloc = await deployedContract.allocateResourceToShopkeeper(this.stock.Wheat, this.stock.Rice, this.stock.Kerosene, this.hashValue, {from: this.model.account}).call();
+      //console.log(this.stock.ShopKeeperAddress);
+      let callAlloc = await deployedContract.allocateResourceToShopkeeper(this.stock.Wheat, this.stock.Rice, this.stock.Kerosene, this.hashValue, {from: this.model.account});
       console.log('Contract called');
       
       if (callAlloc[0] == true) {

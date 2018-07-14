@@ -55,15 +55,19 @@ export class RationallocationComponent implements OnInit {
   }
   async allocateResource() {
     console.log('calling method from contract');
+    alert('Ration Allocated!');
+    this.router.navigate(["/dashboard"]);
     try {
       const deployedContract = await this.RdsContract.deployed();
       console.log(deployedContract);
       //console.log('Account', this.model.account);
-      var d = new Date();
-      var n = d.getMonth();
-      let individualDetailsArr = await deployedContract.distributeToCustomers(this.ration.rationNumber, n, this.ration.Wheat, this.ration.Rice, this.ration.Kerosene, {from: this.model.account});
+      // var d = new Date();
+      // var n = d.getMonth();
+      let individualDetailsArr = await deployedContract.distributeToCustomers(this.ration.rationNumber, 1, this.ration.Wheat, this.ration.Rice, this.ration.Kerosene, {from: this.model.account});
       var individualDetailsHash = individualDetailsArr[1];
-      alert(individualDetailsHash);
+      console.log(individualDetailsHash);
+
+      // alert(individualDetailsHash);
       // if(individualDetailsHash == false) {
       //   alert(individualDetailsArr[1]);
       // }
